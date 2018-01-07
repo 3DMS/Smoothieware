@@ -222,8 +222,7 @@ void Robot::load_config()
 
     // make each motor
     for (size_t a = 0; a < MAX_ROBOT_ACTUATORS; a++) {
-        Pin pins[3]; //step, dir, enable
-
+		Pin pins[3]; //step, dir, enable
         for (size_t i = 0; i < 3; i++) {
             pins[i].from_string(THEKERNEL->config->value(checksums[a][i])->by_default("nc")->as_string())->as_output();
         }
@@ -236,8 +235,8 @@ void Robot::load_config()
             }
             break; // if any pin is not defined then the axis is not defined (and axis need to be defined in contiguous order)
         }
-		
-		StepperMotor *sm ;
+
+	    StepperMotor *sm ;
 		if(THEKERNEL->config->value(checksums[a][3])->by_default("nc")->as_string() != "nc"
 			&& THEKERNEL->config->value(checksums[a][4])->by_default("nc")->as_string() != "nc"
 		    && THEKERNEL->config->value(checksums[a][5])->by_default("nc")->as_string() != "nc")
@@ -252,7 +251,6 @@ void Robot::load_config()
 		{
 			sm = new StepperMotor(pins[0], pins[1], pins[2]);
 		}
-
         // register this motor (NB This must be 0,1,2) of the actuators array
         uint8_t n= register_motor(sm);
         if(n != a) {

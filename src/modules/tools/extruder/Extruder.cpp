@@ -96,7 +96,7 @@ void Extruder::config_load()
     step_pin.from_string( THEKERNEL->config->value(extruder_checksum, this->identifier, step_pin_checksum          )->by_default("nc" )->as_string())->as_output();
     dir_pin.from_string(  THEKERNEL->config->value(extruder_checksum, this->identifier, dir_pin_checksum           )->by_default("nc" )->as_string())->as_output();
     en_pin.from_string(   THEKERNEL->config->value(extruder_checksum, this->identifier, en_pin_checksum            )->by_default("nc" )->as_string())->as_output();
-	
+
     float steps_per_millimeter = THEKERNEL->config->value(extruder_checksum, this->identifier, steps_per_mm_checksum)->by_default(1)->as_number();
     float acceleration         = THEKERNEL->config->value(extruder_checksum, this->identifier, acceleration_checksum)->by_default(1000)->as_number();
 
@@ -116,6 +116,7 @@ void Extruder::config_load()
         this->volumetric_multiplier = 1.0F / (powf(this->filament_diameter / 2, 2) * PI);
     }
 
+    // Stepper motor object for the extruder
 	// Instantiate pins only if the declaration exists
 	if(THEKERNEL->config->value(extruder_checksum, this->identifier, step_slave_pin_checksum)->by_default("nc" )->as_string() != "nc" 
 	  && THEKERNEL->config->value(extruder_checksum, this->identifier, dir_slave_pin_checksum )->by_default("nc" )->as_string() != "nc"
@@ -132,7 +133,6 @@ void Extruder::config_load()
 	  {
 		  stepper_motor = new StepperMotor(step_pin, dir_pin, en_pin);
 	  }
-
     motor_id = THEROBOT->register_motor(stepper_motor);
 
     stepper_motor->set_max_rate(THEKERNEL->config->value(extruder_checksum, this->identifier, max_speed_checksum)->by_default(1000)->as_number());
